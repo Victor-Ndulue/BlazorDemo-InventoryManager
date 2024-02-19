@@ -1,0 +1,47 @@
+﻿@page "/inventorymanager"
+
+<PageTitle>Inventory Manager</PageTitle>
+
+<h1>InventoryManager</h1>
+
+<input @bind="id" placeholder="Enter product id" required />
+<input @bind="name" @bind:event="oninput" placeholder="Enter product name" required />
+<input @bind="description" @bind:event="oninput" placeholder="Enter product description" />
+<input @bind = "dateTime" @bind:format="yyyy-mm-dd" placeholder="Enter date" />
+<button @onclick = "Save">Save</button>
+
+<p />
+<ul>
+@foreach(var product in products){ <li>@product</li>}
+</ul>
+@code {
+    private List<Product> products = new();
+    private int id;
+    private string name;
+    private string description;
+    private DateOnly dateTime;
+    private void Save()
+    {
+        if (id < 1) return;
+        if (products.Exists(u => u.Id == id)) return; /* throw new ArgumentException("Id already registered with another product."); */
+        var product = new Product()
+        {
+            Id = id, 
+            Name = name,
+            Description = description,
+            DateAdded = dateTime
+        };
+        products.Add(product); id = 0; name = string.Empty; description=string.Empty;
+    }
+    public class Product
+    {
+        public int Id{ get; set; }
+        public string? Name { get; set; } = "Unidentifued";
+        public string? Description { get; set; } = "Unidentified";
+        public DateOnly DateAdded { get; set; } = DateOnly.Parse(DateTime.UtcNow.Date.ToShortDateString());
+        public override string ToString()
+        {
+            return $"Product info: \n Product Id: {Id}\n Product name: {Name}\n Product description: {Description}";
+        }
+    }
+}

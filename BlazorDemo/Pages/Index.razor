@@ -1,0 +1,21 @@
+﻿@page "/{userInput}"
+@page "/"
+
+<PageTitle>Index</PageTitle>
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<SurveyPrompt Title="Welcome to Victor's Blazor Demo" />
+Your input is @Text. Default value is 'Hello World'
+
+@code{
+    [Parameter]
+    public string UserInput { get; set; } = "Hello World";
+    private string Text;
+    protected override void OnParametersSet(){
+        Text = UserInput;
+        base.OnParametersSet();
+    }
+}
